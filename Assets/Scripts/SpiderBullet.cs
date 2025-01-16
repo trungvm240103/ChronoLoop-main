@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class SpiderBullet : MonoBehaviour
 {
-    private void OnTriggerEnter2D(Collider2D collision)
+
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Player")
-            Destroy(this.gameObject);
+        // If the bullet collides with an object tagged "Ground"
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            Destroy(gameObject);  // Destroy the bullet
+        }
     }
+
 }
