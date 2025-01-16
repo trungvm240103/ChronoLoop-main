@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class WinDetection : MonoBehaviour
 {
-    public string winSceneName = "WinScene"; // Name of the scene to load when the player wins
+    public string winSceneName = "Win"; // Name of the scene to load when the player wins
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
