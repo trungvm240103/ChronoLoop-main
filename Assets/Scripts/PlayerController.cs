@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
@@ -218,11 +219,16 @@ public class PlayerController : MonoBehaviour
 
     public void Die()
     {
-        Debug.Log("Player is Dead!");
-        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+        SceneTracker.SetLastLevel(SceneManager.GetActiveScene().name);
+
+        // Chuyển sang scene Lose
+        SceneManager.LoadScene("Lose");
     }
 
-    public void Respawn()
+
+
+
+public void Respawn()
     {
         transform.position = respawnPosition;
         rb.velocity = Vector2.zero;
