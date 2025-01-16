@@ -7,13 +7,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpForce = 10f;
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] private float fallThreshold = -10f;
-    [SerializeField] private Slider forceBar; // Kéo Slider vào đây
-    [SerializeField] private float chargeRate = 0.3f; // Tốc độ tăng
+    [SerializeField] private Slider forceBar; 
+    [SerializeField] private float chargeRate = 0.3f; 
 
     public Vector3 respawnPosition;
     private bool isJumping = false;
     private float chargeValue = 0f;
-    private bool isCharging = false;
     private KeyCode currentChargeKey = KeyCode.None;
 
     public Rigidbody2D rb;
@@ -110,42 +109,30 @@ public class PlayerController : MonoBehaviour
 
     public void Jump()
     {
-        if (!isJumping)
+        if (isJumping == false)
         {
             isJumping = true;
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             anim.SetTrigger("jump");
         }
-        else if (onWall())
-        {
-            isJumping = true;
-            if (horizontalInput == 0)
-            {
-                rb.velocity = new Vector2(-Mathf.Sign(transform.localScale.x) * 10, 0);
-                transform.localScale = new Vector3(-Mathf.Sign(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-            }
-            else
-            {
-                rb.velocity = new Vector2(-Mathf.Sign(transform.localScale.x) * 3, 6);
-            }
-            wallJumpCooldown = 0;
-        }
+      
+        
     }
 
     public void JumpAndMove(float horizontalDirection)
     {
-        if (isJumping == false) // Chỉ cho nhảy khi đang chạm đất
+        if (isJumping == false) 
         {
             rb.velocity = new Vector2(horizontalDirection * moveSpeed, jumpForce);
 
             // Lật hướng nhân vật
             if (horizontalDirection > 0.01f)
             {
-                transform.localScale = new Vector3(Mathf.Abs(originalScale.x), originalScale.y, originalScale.z); // Quay phải
+                transform.localScale = new Vector3(Mathf.Abs(originalScale.x), originalScale.y, originalScale.z); 
             }
             else if (horizontalDirection < -0.01f)
             {
-                transform.localScale = new Vector3(-Mathf.Abs(originalScale.x), originalScale.y, originalScale.z); // Quay trái
+                transform.localScale = new Vector3(-Mathf.Abs(originalScale.x), originalScale.y, originalScale.z); 
             }
 
             anim.SetBool("run", horizontalDirection != 0);
@@ -157,31 +144,26 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log("Handling force charge...");  // Check if the method is being called
 
-        // Kiểm tra nếu giữ phím LeftArrow
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            // Nếu trước đó không giữ LeftArrow thì reset
             if (currentChargeKey != KeyCode.LeftArrow)
             {
-                chargeValue = 0f;  // Reset thanh
+                chargeValue = 0f;  
                 currentChargeKey = KeyCode.LeftArrow;
             }
-            ChargeForceBar();  // Tăng dần
+            ChargeForceBar();  
         }
-        // Kiểm tra nếu giữ phím RightArrow
         else if (Input.GetKey(KeyCode.RightArrow))
         {
-            // Nếu trước đó không giữ RightArrow thì reset
             if (currentChargeKey != KeyCode.RightArrow)
             {
-                chargeValue = 0f;  // Reset thanh
+                chargeValue = 0f;  
                 currentChargeKey = KeyCode.RightArrow;
             }
-            ChargeForceBar();  // Tăng dần
+            ChargeForceBar();  
         }
         else
         {
-            // Không giữ phím nào → reset thanh
             chargeValue = 0f;
             currentChargeKey = KeyCode.None;
 
@@ -193,16 +175,15 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    // Hàm tăng thanh theo thời gian
     private void ChargeForceBar()
     {
-        chargeValue += chargeRate * Time.deltaTime;  // Tăng dần theo thời gian giữ
-        chargeValue = Mathf.Clamp01(chargeValue);    // Giới hạn từ 0 đến 1
+        chargeValue += chargeRate * Time.deltaTime;  
+        chargeValue = Mathf.Clamp01(chargeValue);    
 
         if (forceBar != null)
         {
-            forceBar.value = chargeValue;  // Cập nhật thanh Slider
-            Debug.Log("Force Bar Value: " + forceBar.value);  // Log updated slider value
+            forceBar.value = chargeValue;  
+            Debug.Log("Force Bar Value: " + forceBar.value);  
         }
     }
 
@@ -261,7 +242,7 @@ public class PlayerController : MonoBehaviour
 
     public void ResetHorizontalVelocity()
     {
-        rb.velocity = new Vector2(0, rb.velocity.y);  // Chỉ reset trục X
+        rb.velocity = new Vector2(0, rb.velocity.y);  
     }
 
     public void SetRespawnPosition(Vector3 newPosition)
